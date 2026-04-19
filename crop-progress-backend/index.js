@@ -15,7 +15,7 @@ app.use(cors({
     allowHeaders: ['Content-Type', 'Authorization',"Cache-Control", "X-Requested-With", "Accept", "Origin","Pragma"],
     
 }));
-app.options('*', cors()); // Enable pre-flight for all routes
+app.options('/*', cors()); // Enable pre-flight for all routes
 app.use('/api/auth', authRoutes);
 app.use('/api/field-management', fieldManagementRoutes);
 
