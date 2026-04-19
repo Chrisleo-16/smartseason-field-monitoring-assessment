@@ -71,4 +71,25 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Get user details by email
+router.get('/user/:email', async (req, res) => {
+    const { email } = req.params;
+
+    try {
+        const { rows } = await db.query(
+            `SELECT user_id, username, email, users_role, phone_number FROM users WHERE email = $1`,
+            [email]
+        );
+        
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json(rows[0]);
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 module.exports = router;
