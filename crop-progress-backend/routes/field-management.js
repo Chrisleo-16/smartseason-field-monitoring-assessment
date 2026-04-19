@@ -22,7 +22,14 @@ const calculateComputedStatus = (stage, harvestingDateStr) => {
 
 // 1. Create a new field (Admin)
 router.post('/fields', async (req, res) => {
+    console.log('POST /fields - Request body:', req.body);
+    
     const { field_name, field_location, crop_type, planting_date, harvesting_date, user_id, insights, status_description } = req.body;
+    
+    // Validation
+    if (!field_name || !field_location || !crop_type || !planting_date || !harvesting_date || !user_id) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
     
     // Default stage for a new field is 'Planted'
     const current_stage = req.body.current_stage || 'Planted';
@@ -41,7 +48,7 @@ router.post('/fields', async (req, res) => {
         res.status(201).json({ message: 'Field created successfully', computed_status });
     } catch (error) {
         console.error('Error creating field:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 
