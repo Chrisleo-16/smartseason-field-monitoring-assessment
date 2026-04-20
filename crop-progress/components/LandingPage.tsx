@@ -82,7 +82,7 @@ export const LandingPage = () => {
   // Animation variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const } },
   };
 
   const staggerContainer = {
@@ -92,7 +92,7 @@ export const LandingPage = () => {
 
   const menuVariants = {
     closed: { opacity: 0, x: "100%" },
-    open: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 300, damping: 30 } },
+    open: { opacity: 1, x: 0, transition: { type: "spring" as const, stiffness: 300, damping: 30 } },
   };
 
   const menuItemVariants = {
@@ -959,10 +959,14 @@ export const LandingPage = () => {
               Get In Touch
             </div>
             <h2 style={{ fontFamily: "Instrument Serif,serif", fontSize: "clamp(30px,4vw,52px)", color: "#F0EDE4", lineHeight: 1.1, letterSpacing: "-0.02em" }}>
-              Contact our staff for
+              Ready to transform your
               <br />
-              <em style={{ color: "#7AB85A" }}>further details</em>
+              <em style={{ color: "#7AB85A" }}>farming operations?</em>
             </h2>
+            <p style={{ fontFamily: "DM Sans", fontSize: "clamp(15px,1.8vw,17px)", color: "#9A968E", lineHeight: 1.7, fontWeight: 300, maxWidth: 600, margin: "0 auto" }}>
+              Our team is available 24/7 to help you get started. Whether you're a small-scale farmer or managing large agricultural operations, 
+              we're here to provide personalized guidance and answer all your questions about implementing SmartSeason monitoring solutions.
+            </p>
           </motion.div>
           
           <motion.div
@@ -979,14 +983,16 @@ export const LandingPage = () => {
               className="card-hover"
               style={{
                 display: "flex",
-                alignItems: "center",
+                alignItems: "flex-start",
                 gap: 16,
-                padding: "24px 32px",
+                padding: "28px 32px",
                 borderRadius: 16,
                 border: "1px solid rgba(240,237,228,0.07)",
                 background: "rgba(255,255,255,0.02)",
                 textDecoration: "none",
                 transition: "all 0.3s",
+                minWidth: "280px",
+                textAlign: "left",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-4px)";
@@ -997,13 +1003,19 @@ export const LandingPage = () => {
                 e.currentTarget.style.borderColor = "rgba(240,237,228,0.07)";
               }}
             >
-              <div style={{ fontSize: 32 }}>📱</div>
+              <div style={{ fontSize: 32, flexShrink: 0 }}>📱</div>
               <div>
                 <div style={{ fontFamily: "DM Sans", fontSize: 16, fontWeight: 500, color: "#F0EDE4", marginBottom: 4 }}>
                   WhatsApp
                 </div>
-                <div style={{ fontFamily: "DM Sans", fontSize: 14, color: "#9A968E" }}>
+                <div style={{ fontFamily: "DM Sans", fontSize: 14, color: "#9A968E", marginBottom: 8 }}>
                   +254 748 333 763
+                </div>
+                <div style={{ fontFamily: "DM Sans", fontSize: 13, color: "#7AB85A", fontWeight: 400, lineHeight: 1.4 }}>
+                  <strong>Best for:</strong> Quick questions, immediate support, demo requests
+                </div>
+                <div style={{ fontFamily: "DM Sans", fontSize: 12, color: "#666", marginTop: 4, lineHeight: 1.3 }}>
+                  Mention your farm size and specific needs for faster assistance
                 </div>
               </div>
             </a>
@@ -1013,14 +1025,16 @@ export const LandingPage = () => {
               className="card-hover"
               style={{
                 display: "flex",
-                alignItems: "center",
+                alignItems: "flex-start",
                 gap: 16,
-                padding: "24px 32px",
+                padding: "28px 32px",
                 borderRadius: 16,
                 border: "1px solid rgba(240,237,228,0.07)",
                 background: "rgba(255,255,255,0.02)",
                 textDecoration: "none",
                 transition: "all 0.3s",
+                minWidth: "280px",
+                textAlign: "left",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = "translateY(-4px)";
@@ -1031,13 +1045,19 @@ export const LandingPage = () => {
                 e.currentTarget.style.borderColor = "rgba(240,237,228,0.07)";
               }}
             >
-              <div style={{ fontSize: 32 }}>✉️</div>
+              <div style={{ fontSize: 32, flexShrink: 0 }}>✉️</div>
               <div>
                 <div style={{ fontFamily: "DM Sans", fontSize: 16, fontWeight: 500, color: "#F0EDE4", marginBottom: 4 }}>
                   Email
                 </div>
-                <div style={{ fontFamily: "DM Sans", fontSize: 14, color: "#9A968E" }}>
+                <div style={{ fontFamily: "DM Sans", fontSize: 14, color: "#9A968E", marginBottom: 8 }}>
                   chrisbenevansleo@gmail.com
+                </div>
+                <div style={{ fontFamily: "DM Sans", fontSize: 13, color: "#7AB85A", fontWeight: 400, lineHeight: 1.4 }}>
+                  <strong>Best for:</strong> Detailed inquiries, proposals, documentation
+                </div>
+                <div style={{ fontFamily: "DM Sans", fontSize: 12, color: "#666", marginTop: 4, lineHeight: 1.3 }}>
+                  Include farm details, crop types, and expected timeline for response
                 </div>
               </div>
             </a>
@@ -1049,7 +1069,7 @@ export const LandingPage = () => {
       <footer style={{ padding: "72px 5% 40px", borderTop: "1px solid rgba(240,237,228,0.06)" }}>
         <div className="cs-container">
           <div className="footer-top">
-            <div style={{ maxWidth: 280 }}>
+            <div style={{ maxWidth: 320 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
                 <div
                   style={{
@@ -1067,11 +1087,95 @@ export const LandingPage = () => {
                 </div>
                 <span style={{ fontFamily: "Instrument Serif", fontSize: 20, color: "#F0EDE4" }}>CropSync</span>
               </div>
-              <p style={{ fontFamily: "DM Sans", fontSize: 14, color: "#666", lineHeight: 1.65, fontWeight: 300 }}>
-                Modern farm intelligence for the next generation of African agriculture.
+              <p style={{ fontFamily: "DM Sans", fontSize: 14, color: "#666", lineHeight: 1.65, fontWeight: 300, marginBottom: 20 }}>
+                Modern farm intelligence for next generation of African agriculture. Empowering farmers with data-driven insights for sustainable growth.
               </p>
+              <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+                <a
+                  href="https://wa.me/254748333763"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: "50%",
+                    background: "rgba(78,139,58,0.1)",
+                    border: "1px solid rgba(78,139,58,0.3)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textDecoration: "none",
+                    transition: "all 0.2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(78,139,58,0.2)";
+                    e.currentTarget.style.transform = "scale(1.05)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(78,139,58,0.1)";
+                    e.currentTarget.style.transform = "scale(1)";
+                  }}
+                >
+                  📱
+                </a>
+                <a
+                  href="mailto:chrisbenevansleo@gmail.com"
+                  style={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: "50%",
+                    background: "rgba(78,139,58,0.1)",
+                    border: "1px solid rgba(78,139,58,0.3)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textDecoration: "none",
+                    transition: "all 0.2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "rgba(78,139,58,0.2)";
+                    e.currentTarget.style.transform = "scale(1.05)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "rgba(78,139,58,0.1)";
+                    e.currentTarget.style.transform = "scale(1)";
+                  }}
+                >
+                  ✉️
+                </a>
+              </div>
+              <div style={{ fontFamily: "DM Sans", fontSize: 12, color: "#7AB85A", fontWeight: 500 }}>
+                🌱 Serving farmers across East Africa
+              </div>
             </div>
-            <div className="footer-links">
+            
+            <div className="footer-links" style={{ display: "flex", gap: 60 }}>
+              <div>
+                <div style={{ fontFamily: "DM Sans", fontSize: 11, color: "#555", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 18 }}>
+                  Services
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888", marginBottom: 8 }}>
+                    🛰️ Satellite Monitoring
+                  </div>
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888", marginBottom: 8 }}>
+                    🌦️ Weather Analytics
+                  </div>
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888", marginBottom: 8 }}>
+                    📊 Yield Prediction
+                  </div>
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888" }}>
+                    👥 Field Management
+                  </div>
+                </div>
+              </div>
+              
               <div>
                 <div style={{ fontFamily: "DM Sans", fontSize: 11, color: "#555", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 18 }}>
                   Contact
@@ -1083,7 +1187,7 @@ export const LandingPage = () => {
                     rel="noopener noreferrer"
                     style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888", textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}
                   >
-                    <span>📱</span> WhatsApp
+                    <span>📱</span> +254 748 333 763
                   </a>
                 </div>
                 <div style={{ marginBottom: 12 }}>
@@ -1091,7 +1195,43 @@ export const LandingPage = () => {
                     href="mailto:chrisbenevansleo@gmail.com"
                     style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888", textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}
                   >
-                    <span>✉️</span> Email
+                    <span>✉️</span> chrisbenevansleo@gmail.com
+                  </a>
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888", display: "flex", alignItems: "center", gap: 8 }}>
+                    <span>📍</span> Nairobi, Kenya
+                  </div>
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <div style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888", display: "flex", alignItems: "center", gap: 8 }}>
+                    <span>🕐</span> Mon-Sat: 6AM-6PM
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <div style={{ fontFamily: "DM Sans", fontSize: 11, color: "#555", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 18 }}>
+                  Company
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <a href="#features" style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888", textDecoration: "none" }}>
+                    Features
+                  </a>
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <a href="#how-it-works" style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888", textDecoration: "none" }}>
+                    How It Works
+                  </a>
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <a href="#testimonials" style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888", textDecoration: "none" }}>
+                    Testimonials
+                  </a>
+                </div>
+                <div style={{ marginBottom: 12 }}>
+                  <a href="#contact" style={{ fontFamily: "DM Sans", fontSize: 14, color: "#888", textDecoration: "none" }}>
+                    Contact Us
                   </a>
                 </div>
               </div>
