@@ -141,14 +141,14 @@ export const FieldUpdate: React.FC<FieldUpdateProps> = ({ fieldId, onUpdateCompl
 
               {/* Insights */}
               <div style={{ marginBottom:24 }}>
+                <label style={{ fontSize:12, color:'#888', display:'block', marginBottom:8, textTransform:'uppercase', letterSpacing:'0.06em' }}>Field Observations & Insights</label>
                 <TextArea
-                  label="Field Observations & Insights"
                   placeholder={`Record your observations:\n\n• Crop health and vigour\n• Weather impact on growth\n• Signs of pest or disease\n• Irrigation and soil moisture\n• Estimated days to next stage`}
                   value={updateData.insights}
-                  onValueChange={v=>setUpdateData({...updateData,insights:v})}
-                  isRequired
-                  minRows={6}
-                  variant="bordered"
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>)=>setUpdateData({...updateData,insights:e.target.value})}
+                  required
+                  rows={6}
+                  variant="secondary"
                   classNames={{ input:'text-[#E8E4DA]', inputWrapper:'bg-white/5 border-white/10 hover:border-white/20 data-[focused=true]:border-[rgba(122,184,90,0.5)]' }}
                 />
                 <div style={{ fontSize:11, color:'#555', marginTop:6 }}>Detailed observations help admins make better decisions.</div>
@@ -169,9 +169,9 @@ export const FieldUpdate: React.FC<FieldUpdateProps> = ({ fieldId, onUpdateCompl
 
               <div style={{ display:'flex', gap:12 }}>
                 {onUpdateComplete && (
-                  <Button type="button" variant="bordered" onPress={onUpdateComplete} style={{ flex:1, color:'#888', borderColor:'rgba(255,255,255,0.1)' }}>Cancel</Button>
+                  <Button type="button" variant="outline" onPress={onUpdateComplete} style={{ flex:1, color:'#888', borderColor:'rgba(255,255,255,0.1)' }}>Cancel</Button>
                 )}
-                <Button type="submit" color="success" variant="flat" isLoading={submitting||success} style={{ flex:2, fontWeight:500 }}>
+                <Button type="submit" color="success"  isLoading={submitting||success} style={{ flex:2, fontWeight:500 }}>
                   {success?'✅ Saved!':submitting?'Saving…':'Save Field Update'}
                 </Button>
               </div>
