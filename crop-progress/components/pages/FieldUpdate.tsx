@@ -149,7 +149,7 @@ export const FieldUpdate: React.FC<FieldUpdateProps> = ({ fieldId, onUpdateCompl
                   required
                   rows={6}
                   variant="secondary"
-                  classNames={{ input:'text-[#E8E4DA]', inputWrapper:'bg-white/5 border-white/10 hover:border-white/20 data-[focused=true]:border-[rgba(122,184,90,0.5)]' }}
+                  className="text-[#E8E4DA]"
                 />
                 <div style={{ fontSize:11, color:'#555', marginTop:6 }}>Detailed observations help admins make better decisions.</div>
               </div>
