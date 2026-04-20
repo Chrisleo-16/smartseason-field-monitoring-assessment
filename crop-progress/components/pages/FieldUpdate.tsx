@@ -171,7 +171,7 @@ export const FieldUpdate: React.FC<FieldUpdateProps> = ({ fieldId, onUpdateCompl
                 {onUpdateComplete && (
                   <Button type="button" variant="outline" onPress={onUpdateComplete} style={{ flex:1, color:'#888', borderColor:'rgba(255,255,255,0.1)' }}>Cancel</Button>
                 )}
-                <Button type="submit" color="success"  isLoading={submitting||success} style={{ flex:2, fontWeight:500 }}>
+                <Button type="submit" variant="primary" isDisabled={submitting||success} style={{ flex:2, fontWeight:500, background: 'rgba(94,196,122,0.2)', borderColor: 'rgba(94,196,122,0.4)', color: '#7AB85A' }}>
                   {success?'✅ Saved!':submitting?'Saving…':'Save Field Update'}
                 </Button>
               </div>
