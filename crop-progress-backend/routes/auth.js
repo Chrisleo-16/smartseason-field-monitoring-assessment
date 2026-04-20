@@ -92,4 +92,20 @@ router.get('/user/:email', async (req, res) => {
     }
 });
 
+// Get all users (for admin dropdowns)
+router.get('/users', async (req, res) => {
+    try {
+        const { rows } = await db.query(`
+            SELECT user_id, username, email, users_role 
+            FROM users 
+            ORDER BY username
+        `);
+        
+        res.json(rows);
+    } catch (error) {
+        console.error('Get users error:', error);
+        res.status(500).json({ error: 'Failed to fetch users' });
+    }
+});
+
 module.exports = router;
