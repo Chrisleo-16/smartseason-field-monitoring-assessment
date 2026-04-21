@@ -1,6 +1,4 @@
-# SmartSeason Field Monitoring System
-
-## 🌱 Overview
+# 🌱 SmartSeason Field Monitoring System Assessment. 
 
 SmartSeason Field Monitoring System is a comprehensive agricultural technology platform designed to empower farmers across East Africa with data-driven insights for sustainable farming. The system provides real-time field monitoring, weather analytics, yield prediction, and field agent coordination capabilities.
 
@@ -54,57 +52,41 @@ SmartSeason Field Monitoring System is a comprehensive agricultural technology p
 
 **Users Table:**
 ```sql
-- id (SERIAL PRIMARY KEY)
-- username (VARCHAR UNIQUE)
-- email (VARCHAR UNIQUE)
-- password_hash (VARCHAR)
-- role (ENUM: 'admin', 'field_agent')
-- created_at (TIMESTAMP)
-- updated_at (TIMESTAMP)
+user_id      SERIAL PRIMARY KEY,
+username     VARCHAR(255) UNIQUE,
+email        VARCHAR(255) UNIQUE,
+password     VARCHAR(255),
+users_role   VARCHAR(255),
+phone_number BIGINT UNIQUE 
 ```
 
 **Fields Table:**
 ```sql
-- id (SERIAL PRIMARY KEY)
-- name (VARCHAR)
-- location (VARCHAR)
-- crop_type (VARCHAR)
-- size_acres (DECIMAL)
-- planting_date (DATE)
-- farmer_id (INTEGER REFERENCES users.id)
-- created_at (TIMESTAMP)
-- updated_at (TIMESTAMP)
+field_id           SERIAL PRIMARY KEY,
+field_name         VARCHAR(255),
+field_location     VARCHAR(255),
+crop_type          VARCHAR(255),
+planting_date      TIMESTAMP,
+insights           TEXT,                             -- upgraded from VARCHAR(255): insights can be long
+status_description VARCHAR(255),
+user_id            INT REFERENCES users(user_id) ON DELETE CASCADE,
+harvesting_date    TIMESTAMP,
+last_updated_at    TIMESTAMP NOT NULL DEFAULT NOW(),
+computed_status    computed_status_enum DEFAULT 'Active',
+current_stage      current_stage_enum   DEFAULT 'Planted'
 ```
 
 **Photos Table:**
 ```sql
-- id (SERIAL PRIMARY KEY)
-- field_id (INTEGER REFERENCES fields.id)
-- photo_url (VARCHAR)
-- upload_date (TIMESTAMP)
-- photo_type (VARCHAR)
-- notes (TEXT)
-```
-
-**Weather Data Table:**
-```sql
-- id (SERIAL PRIMARY KEY)
-- location (VARCHAR)
-- temperature (DECIMAL)
-- humidity (DECIMAL)
-- rainfall (DECIMAL)
-- wind_speed (DECIMAL)
-- recorded_at (TIMESTAMP)
-```
-
-**Analytics Table:**
-```sql
-- id (SERIAL PRIMARY KEY)
-- field_id (INTEGER REFERENCES fields.id)
-- prediction_type (VARCHAR)
-- prediction_value (DECIMAL)
-- confidence_score (DECIMAL)
-- created_at (TIMESTAMP)
+photo_id SERIAL PRIMARY KEY,
+field_id INTEGER NOT NULL REFERENCES field_management(field_id) ON DELETE CASCADE,
+photo_data TEXT NOT NULL, -- Base64 encoded image data
+mime_type VARCHAR(50) NOT NULL,
+photo_type VARCHAR(50) DEFAULT 'general', -- 'general', 'planting', 'growth', 'harvest', 'issue'
+notes TEXT,
+upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+uploaded_by INTEGER REFERENCES users(user_id),
+ai_analysis JSONB -- Store AI analysis results
 ```
 
 ### Database Connection
@@ -126,35 +108,41 @@ SmartSeason Field Monitoring System is a comprehensive agricultural technology p
 - `GET /fields/:id` - Get specific field details
 - `POST /fields` - Create new field
 - `PUT /fields/:id` - Update field information
+- `PATCH /fields/:id` - Partially update field information(For field agent)
 - `DELETE /fields/:id` - Delete field
 
-### Weather (`/api/weather`)
-- `GET /:location` - Get weather data for location
-- `GET /forecast/:location` - Get 14-day forecast
-- `GET /alerts/:location` - Get weather alerts
+### Weather (`/api/weather`) - OpenWeatherMap API Integration
+- `GET /:location` - Get current weather data and 3-day forecast for a location
+- **Features:** Real-time temperature, humidity, wind speed, pressure, weather description
+- **Fallback:** Provides mock data when OpenWeatherMap API key is not configured
+- **Response Format:** JSON with current conditions, forecast array, and alerts
 
-### Photos (`/api/photos`)
-- `POST /fields/:fieldId/photos` - Upload field photo
-- `GET /fields/:fieldId/photos` - Get field photos
-- `DELETE /photos/:id` - Delete photo
+### Photos (`/api/photos`) - Field Photo Management
+- `POST /fields/:fieldId/photos` - Upload field photo with Base64 encoding
+- `GET /fields/:fieldId/photos` - Get all photos for a specific field
+- `DELETE /photos/:id` - Delete a specific photo
+- **Features:** AI analysis storage, photo categorization, metadata tracking
 
-### Analytics (`/api/analytics`)
-- `GET /predictions` - Get yield predictions
-- `GET /field/:id/analytics` - Get field-specific analytics
-- `POST /predictions` - Create new prediction
+### Analytics (`/api/analytics`) - Field Management Analytics
+- `GET /predictions` - Get predictive analytics for all fields (yield predictions, risk assessment)
+- `GET /yield-charts` - Get yield forecasting data and crop performance charts
+- **Features:** Growth progress calculation, risk assessment, harvest predictions, crop performance analysis
+- **Data Source:** Based on field_management table data
 
-### Reports (`/api/reports`)
-- `GET /weekly` - Generate weekly report
-- `GET /monthly` - Generate monthly report
-- `GET /field/:id/report` - Generate field-specific report
-- `POST /generate-pdf` - Generate PDF report
+### Reports (`/api/reports`) - Comprehensive Reporting System
+- `GET /weekly` - Generate weekly field report with field updates and recommendations
+- `GET /pdf/:reportType` - Generate PDF report (weekly/analytics) using html-pdf-node
+- `GET /json/:reportType` - Get JSON report data for easy conversion
+- `POST /email` - Send email reports (mock implementation)
+- `GET /history` - Get report generation history
+- **Features:** HTML-to-PDF conversion, field summaries, crop breakdown, automated recommendations
 
 ## 👥 User Roles & Permissions
 
 ### Admin Role
 **Permissions:**
 - View all fields across the system
-- Manage user accounts (create, update, delete)
+- Manage field agents accounts (create, update, delete)
 - Access system analytics and reports
 - Manage field agent assignments
 - View comprehensive dashboard with system metrics
@@ -231,19 +219,7 @@ cp .env.example .env
 npm start
 ```
 
-### Environment Variables
-**Backend (.env):**
-```
-DATABASE_URL=postgresql://username:password@host:port/database
-JWT_SECRET=your-jwt-secret-key
-PORT=3000
-```
 
-**Frontend (.env):**
-```
-NEXT_PUBLIC_API_URL=http://localhost:3000
-NEXT_PUBLIC_APP_URL=http://localhost:3001
-```
 
 ## 📱 Key Features
 
@@ -400,46 +376,12 @@ NEXT_PUBLIC_APP_URL=http://localhost:3001
 - Global CDN deployment
 - Database sharding
 
-## 📞 Support & Contact
-
-### Technical Support
-- **WhatsApp**: +254 748 333 763
-- **Email**: chrisbenevansleo@gmail.com
-- **Location**: Nairobi, Kenya
-- **Working Hours**: Mon-Sat: 6AM-6PM
-
 ### Documentation
 - API documentation available at `/api/docs`
 - User guides and tutorials
 - Video walkthroughs
 - Community forum (coming soon)
 
-## 📄 License
-
-© 2024 SmartSeason Field Monitoring System. All rights reserved.
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our contributing guidelines for more information on how to get involved.
-
----
-
-## 📸 Screenshots Needed
-
-For comprehensive documentation, the following screenshots would be valuable:
-
-1. **Admin Dashboard**: Full admin interface with system overview
-2. **Field Agent Dashboard**: Agent-specific view with assigned fields
-3. **Field Management**: Field creation and editing interface
-4. **Weather Widget**: Weather display and forecasting
-5. **Photo Upload**: Field photo upload interface
-6. **Analytics Dashboard**: Charts and predictive analytics
-7. **Reports Generation**: PDF report creation interface
-8. **Mobile Views**: Responsive design on mobile devices
-9. **Authentication Flow**: Login and registration screens
-10. **Settings Pages**: User profile and system settings
-
-Please provide these screenshots to complete the visual documentation of the system.
 
 ---
 
@@ -461,4 +403,4 @@ Please provide these screenshots to complete the visual documentation of the sys
 
 ---
 
-*This documentation represents the current state of the SmartSeason Field Monitoring System as of the latest deployment. For the most up-to-date information, please refer to the live application or contact the development team.*
+*This documentation represents the current state of the SmartSeason Field Monitoring System as of the latest deployment.*
