@@ -39,7 +39,7 @@ export const Login = () => {
   }
 
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", minHeight: '100vh', background: '#060A04', display: 'flex', overflow: 'hidden' }}>
+    <div style={{ fontFamily: "'Nunito', sans-serif", minHeight: '100vh', background: '#060A04', display: 'flex', overflow: 'hidden' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,7 +47,7 @@ export const Login = () => {
         .auth-input {
           width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
           border-radius: 12px; padding: 14px 16px;
-          font-family: 'DM Sans', sans-serif; font-size: 15px; color: #F0EDE4; outline: none;
+          font-family: 'Nunito', sans-serif; font-size: 15px; color: #F0EDE4; outline: none;
           transition: border-color 0.2s, background 0.2s;
         }
         .auth-input::placeholder { color: #555; }
@@ -55,7 +55,7 @@ export const Login = () => {
 
         .auth-btn {
           width: 100%; background: #4E8B3A; color: white; border: none; border-radius: 12px;
-          padding: 15px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+          padding: 15px; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 500;
           cursor: pointer; transition: all 0.2s;
         }
         .auth-btn:hover:not(:disabled) { background: #5FA348; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(78,139,58,0.3); }
@@ -126,7 +126,7 @@ export const Login = () => {
           <h2 style={{ fontFamily: 'Instrument Serif', fontSize: 32, color: '#F0EDE4', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 12 }}>
             Every field tells<br /><em style={{ color: '#7AB85A' }}>a story</em>
           </h2>
-          <p style={{ fontFamily: 'DM Sans', fontSize: 15, color: '#9A968E', fontWeight: 300, lineHeight: 1.6, maxWidth: 280 }}>
+          <p style={{ fontFamily: 'Nunito', fontSize: 15, color: '#9A968E', fontWeight: 300, lineHeight: 1.6, maxWidth: 280 }}>
             Monitor, manage, and maximise your farm's potential with real-time intelligence.
           </p>
         </div>
@@ -135,7 +135,7 @@ export const Login = () => {
           {[['12K+','Farmers'],['98%','Uptime'],['3.2M','Acres']].map(([v,l]) => (
             <div key={l} style={{ textAlign: 'center' }}>
               <div style={{ fontFamily: 'Instrument Serif', fontSize: 22, color: '#7AB85A' }}>{v}</div>
-              <div style={{ fontFamily: 'DM Sans', fontSize: 12, color: '#666', fontWeight: 300 }}>{l}</div>
+              <div style={{ fontFamily: 'Nunito', fontSize: 12, color: '#666', fontWeight: 300 }}>{l}</div>
             </div>
           ))}
         </div>
@@ -152,22 +152,22 @@ export const Login = () => {
 
           <div style={{ marginBottom: 36 }}>
             <h1 style={{ fontFamily: 'Instrument Serif', fontSize: 36, color: '#F0EDE4', letterSpacing: '-0.02em', marginBottom: 8, lineHeight: 1.1 }}>Welcome back</h1>
-            <p style={{ fontFamily: 'DM Sans', fontSize: 15, color: '#888', fontWeight: 300 }}>Sign in to your CropSync account</p>
+            <p style={{ fontFamily: 'Nunito', fontSize: 15, color: '#888', fontWeight: 300 }}>Sign in to your CropSync account</p>
           </div>
 
           {error && (
-            <div style={{ background: 'rgba(220,53,69,0.1)', border: '1px solid rgba(220,53,69,0.3)', borderRadius: 10, padding: '12px 16px', marginBottom: 24, fontFamily: 'DM Sans', fontSize: 14, color: '#FF8088' }}>{error}</div>
+            <div style={{ background: 'rgba(220,53,69,0.1)', border: '1px solid rgba(220,53,69,0.3)', borderRadius: 10, padding: '12px 16px', marginBottom: 24, fontFamily: 'Nunito', fontSize: 14, color: '#FF8088' }}>{error}</div>
           )}
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div>
-              <label style={{ fontFamily: 'DM Sans', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 8 }}>Email address</label>
+              <label style={{ fontFamily: 'Nunito', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 8 }}>Email address</label>
               <input type="email" className="auth-input" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
             </div>
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                <label style={{ fontFamily: 'DM Sans', fontSize: 13, color: '#A8A49C' }}>Password</label>
-                <a href="#" style={{ fontFamily: 'DM Sans', fontSize: 13, color: '#7AB85A', textDecoration: 'none' }}>Forgot password?</a>
+                <label style={{ fontFamily: 'Nunito', fontSize: 13, color: '#A8A49C' }}>Password</label>
+                <a href="#" style={{ fontFamily: 'Nunito', fontSize: 13, color: '#7AB85A', textDecoration: 'none' }}>Forgot password?</a>
               </div>
               <div style={{ position: 'relative' }}>
                 <input type={showPassword ? 'text' : 'password'} className="auth-input" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} required style={{ paddingRight: 48 }} />
@@ -183,15 +183,15 @@ export const Login = () => {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, margin: '28px 0' }}>
             <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }} />
-            <span style={{ fontFamily: 'DM Sans', fontSize: 13, color: '#555' }}>or</span>
+            <span style={{ fontFamily: 'Nunito', fontSize: 13, color: '#555' }}>or</span>
             <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.08)' }} />
           </div>
 
-          <p style={{ fontFamily: 'DM Sans', fontSize: 14, color: '#888', textAlign: 'center', fontWeight: 300, marginBottom: 16 }}>
+          <p style={{ fontFamily: 'Nunito', fontSize: 14, color: '#888', textAlign: 'center', fontWeight: 300, marginBottom: 16 }}>
             Don't have an account?{' '}
             <Link href="/register" style={{ color: '#7AB85A', textDecoration: 'none', fontWeight: 500 }}>Create one</Link>
           </p>
-          <p style={{ fontFamily: 'DM Sans', fontSize: 14, color: '#888', textAlign: 'center', fontWeight: 300 }}>
+          <p style={{ fontFamily: 'Nunito', fontSize: 14, color: '#888', textAlign: 'center', fontWeight: 300 }}>
             <Link href="/" style={{ color: '#666', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, transition: 'color 0.2s' }}>← Back to home</Link>
           </p>
         </div>

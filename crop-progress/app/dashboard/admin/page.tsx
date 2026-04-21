@@ -7,6 +7,9 @@ import {
   Field,
   CreateFieldInput,
   getAllUsers,
+  uploadFieldPhoto,
+  getFieldPhotos,
+  PhotoData,
 } from "@/utils/api";
 import WeatherWidget from "@/components/WeatherWidget";
 
@@ -57,6 +60,11 @@ export default function AdminDashboard() {
   });
   const [plantingDateVal, setPlantingDateVal] = useState<string>("");
   const [harvestDateVal, setHarvestDateVal] = useState<string>("");
+  const [fieldPhotos, setFieldPhotos] = useState<File[]>([]);
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
+  const [viewingFieldPhotos, setViewingFieldPhotos] = useState<PhotoData[]>([]);
+  const [selectedFieldForPhotos, setSelectedFieldForPhotos] = useState<Field | null>(null);
+  const [photoModalOpen, setPhotoModalOpen] = useState(false);
 
   useEffect(() => {
     fetchFields();
@@ -97,6 +105,37 @@ export default function AdminDashboard() {
         harvesting_date: harvestDateVal,
       };
       await createField(payload);
+      
+      // Fetch updated fields to get the new field ID
+      const updatedFields = await getAllFields();
+      setFields(updatedFields);
+      
+      // Get the most recently created field (assuming it's the first one or has the highest ID)
+      const newField = updatedFields.reduce((latest, field) => 
+        !latest || field.field_id > latest.field_id ? field : latest, null as Field | null
+      );
+      
+      // Upload photos if any were selected and we found the new field
+      if (fieldPhotos.length > 0 && newField) {
+        setUploadingPhotos(true);
+        try {
+          console.log('Starting photo upload for field:', newField.field_id);
+          console.log('Photos to upload:', fieldPhotos);
+          
+          for (const photo of fieldPhotos) {
+            console.log('Uploading photo:', photo.name);
+            const result = await uploadFieldPhoto(newField.field_id, photo, 'initial', 'Initial field photo during creation');
+            console.log('Upload result:', result);
+          }
+        } catch (photoError: any) {
+          console.error('Failed to upload photos:', photoError);
+          setError(photoError?.message || "Failed to upload photos");
+          // Don't fail the whole operation if photo upload fails
+        } finally {
+          setUploadingPhotos(false);
+        }
+      }
+      
       setIsOpen(false);
       setFormData({
         field_name: "",
@@ -111,7 +150,7 @@ export default function AdminDashboard() {
       });
       setPlantingDateVal("");
       setHarvestDateVal("");
-      fetchFields();
+      setFieldPhotos([]);
     } catch (err: any) {
       setError(err.message || "Failed to create field");
     }
@@ -144,6 +183,20 @@ export default function AdminDashboard() {
     setPlantingDateVal(field.planting_date.split('T')[0]);
     setHarvestDateVal(field.harvesting_date.split('T')[0]);
     setIsOpen(true);
+  };
+
+  const handleViewFieldPhotos = async (field: Field) => {
+    try {
+      console.log('Fetching photos for field:', field.field_id);
+      const photos = await getFieldPhotos(field.field_id);
+      console.log('Photos fetched:', photos);
+      setViewingFieldPhotos(photos);
+      setSelectedFieldForPhotos(field);
+      setPhotoModalOpen(true);
+    } catch (err: any) {
+      console.error('Failed to fetch field photos:', err);
+      setError(err.message || "Failed to load field photos");
+    }
   };
 
   const handleUpdateField = async (e: React.FormEvent) => {
@@ -263,7 +316,7 @@ export default function AdminDashboard() {
   );
 
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", minHeight: "100vh", background: "#0A0E08", color: "#E8E4DA", display: "flex", overflow: "hidden" }}>
+    <div style={{ fontFamily: "'Nunito', sans-serif", minHeight: "100vh", background: "#0A0E08", color: "#E8E4DA", display: "flex", overflow: "hidden" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
         *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -443,7 +496,7 @@ export default function AdminDashboard() {
                     </div>
                     <div className="filter-btns" style={{ display: "flex", gap: 8 }}>
                       {["All", "Planted", "Growing", "Ready", "Harvested"].map((s) => (
-                        <button key={s} onClick={() => setFilterStage(s)} style={{ padding: "7px 14px", borderRadius: 8, border: `1px solid ${filterStage === s ? "rgba(78,139,58,0.4)" : "rgba(255,255,255,0.08)"}`, background: filterStage === s ? "rgba(78,139,58,0.15)" : "transparent", color: filterStage === s ? "#7AB85A" : "#888", cursor: "pointer", fontFamily: "DM Sans", fontSize: 13, transition: "all 0.15s" }}>{s}</button>
+                        <button key={s} onClick={() => setFilterStage(s)} style={{ padding: "7px 14px", borderRadius: 8, border: `1px solid ${filterStage === s ? "rgba(78,139,58,0.4)" : "rgba(255,255,255,0.08)"}`, background: filterStage === s ? "rgba(78,139,58,0.15)" : "transparent", color: filterStage === s ? "#7AB85A" : "#888", cursor: "pointer", fontFamily: "Nunito", fontSize: 13, transition: "all 0.15s" }}>{s}</button>
                       ))}
                     </div>
                     <button onClick={() => setIsOpen(true)} style={{ marginLeft: "auto", padding: "8px 16px", background: "rgba(78,139,58,0.15)", border: "1px solid rgba(78,139,58,0.3)", borderRadius: 8, color: "#7AB85A", fontSize: 13, fontWeight: 500, cursor: "pointer" }}>+ Add Field</button>
@@ -471,6 +524,7 @@ export default function AdminDashboard() {
                           <div style={{ fontSize: 12, color: "#666" }} className="hide-mobile">#{f.user_id}</div>
                           <div style={{ display: "flex", gap: 4 }}>
                             <button onClick={() => handleEditField(f)} style={{ padding: "4px 8px", background: "rgba(78,139,58,0.15)", border: "1px solid rgba(78,139,58,0.3)", borderRadius: 6, color: "#7AB85A", fontSize: 12, cursor: "pointer" }}>Edit</button>
+                            <button onClick={() => handleViewFieldPhotos(f)} style={{ padding: "4px 8px", background: "rgba(90,155,232,0.15)", border: "1px solid rgba(90,155,232,0.3)", borderRadius: 6, color: "#5A9BE8", fontSize: 12, cursor: "pointer" }}>📷 Photos</button>
                             <button onClick={() => handleDeleteField(f.field_id)} style={{ padding: "4px 8px", background: "rgba(220,53,69,0.15)", border: "1px solid rgba(220,53,69,0.3)", borderRadius: 6, color: "#F8727A", fontSize: 12, cursor: "pointer" }}>Delete</button>
                           </div>
                         </div>
@@ -583,12 +637,161 @@ export default function AdminDashboard() {
                   <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 4 }}>Insights</label>
                   <textarea placeholder="Add any initial insights…" value={formData.insights} onChange={(e) => setFormData({ ...formData, insights: e.target.value })} rows={2} style={{ width: "100%", padding: "10px 12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, color: "#E8E4DA", resize: "vertical" }} />
                 </div>
+                <div>
+                  <label style={{ fontSize: 12, color: "#888", display: "block", marginBottom: 4 }}>Field Photos</label>
+                  <div style={{
+                    border: "2px dashed rgba(255,255,255,0.2)",
+                    borderRadius: 8,
+                    padding: "20px",
+                    textAlign: "center",
+                    backgroundColor: "rgba(255,255,255,0.02)",
+                    cursor: "pointer",
+                    transition: "all 0.2s"
+                  }}
+                  onClick={() => document.getElementById('field-photos-input')?.click()}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(122,184,90,0.5)";
+                    e.currentTarget.style.backgroundColor = "rgba(122,184,90,0.05)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
+                    e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.02)";
+                  }}
+                  >
+                    <input
+                      id="field-photos-input"
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={(e) => {
+                        const files = Array.from(e.target.files || []);
+                        setFieldPhotos(prev => [...prev, ...files]);
+                      }}
+                      style={{ display: "none" }}
+                    />
+                    <div style={{ fontSize: "24px", marginBottom: "8px" }}>📷</div>
+                    <div style={{ fontSize: "14px", color: "#E8E4DA", marginBottom: "4px" }}>
+                      {fieldPhotos.length === 0 ? "Click to upload field photos" : `${fieldPhotos.length} photo(s) selected`}
+                    </div>
+                    <div style={{ fontSize: "12px", color: "#888" }}>
+                      JPG, PNG, GIF up to 10MB each
+                    </div>
+                  </div>
+                  
+                  {fieldPhotos.length > 0 && (
+                    <div style={{ marginTop: "12px", display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                      {fieldPhotos.map((photo, index) => (
+                        <div key={index} style={{
+                          position: "relative",
+                          width: "60px",
+                          height: "60px",
+                          borderRadius: "6px",
+                          overflow: "hidden",
+                          border: "1px solid rgba(255,255,255,0.2)"
+                        }}>
+                          <img
+                            src={URL.createObjectURL(photo)}
+                            alt={`Photo ${index + 1}`}
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                          />
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setFieldPhotos(prev => prev.filter((_, i) => i !== index));
+                            }}
+                            style={{
+                              position: "absolute",
+                              top: "2px",
+                              right: "2px",
+                              backgroundColor: "rgba(220,53,69,0.8)",
+                              border: "none",
+                              borderRadius: "50%",
+                              width: "18px",
+                              height: "18px",
+                              cursor: "pointer",
+                              fontSize: "10px",
+                              color: "white",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center"
+                            }}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
               <div style={{ padding: "16px 24px", borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex", justifyContent: "flex-end", gap: 12 }}>
                 <button type="button" onClick={() => setIsOpen(false)} style={{ padding: "8px 16px", background: "transparent", border: "none", color: "#888", cursor: "pointer" }}>Cancel</button>
-                <button type="submit" style={{ padding: "8px 20px", background: "rgba(78,139,58,0.2)", border: "1px solid rgba(78,139,58,0.4)", borderRadius: 8, color: "#7AB85A", fontWeight: 500, cursor: "pointer" }}>{isEditMode ? "Update Field" : "Create Field"}</button>
+                <button type="submit" disabled={uploadingPhotos} style={{ padding: "8px 20px", background: uploadingPhotos ? "rgba(255,255,255,0.1)" : "rgba(78,139,58,0.2)", border: uploadingPhotos ? "1px solid rgba(255,255,255,0.2)" : "1px solid rgba(78,139,58,0.4)", borderRadius: 8, color: uploadingPhotos ? "#888" : "#7AB85A", fontWeight: 500, cursor: uploadingPhotos ? "not-allowed" : "pointer" }}>
+                  {uploadingPhotos ? "Uploading Photos..." : (isEditMode ? "Update Field" : "Create Field")}
+                </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Photo Viewing Modal */}
+      {photoModalOpen && selectedFieldForPhotos && (
+        <div style={{ position: "fixed", inset: 0, zIndex: 300, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.8)" }} onClick={() => setPhotoModalOpen(false)}>
+          <div style={{ background: "#111A0D", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 16, width: "95%", maxWidth: "900px", maxHeight: "90vh", overflow: "auto" }} onClick={(e) => e.stopPropagation()}>
+            <div style={{ padding: "24px", borderBottom: "1px solid rgba(255,255,255,0.1)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <div style={{ fontFamily: "Instrument Serif", fontSize: 20, color: "#F0EDE4" }}>{selectedFieldForPhotos.field_name}</div>
+                <div style={{ fontSize: 14, color: "#888", marginTop: 4 }}>📍 {selectedFieldForPhotos.field_location} • {selectedFieldForPhotos.crop_type}</div>
+              </div>
+              <button onClick={() => setPhotoModalOpen(false)} style={{ background: "none", border: "none", fontSize: 24, color: "#888", cursor: "pointer" }}>×</button>
+            </div>
+            
+            <div style={{ padding: "24px" }}>
+              {viewingFieldPhotos.length === 0 ? (
+                <div style={{ textAlign: "center", padding: "40px", color: "#666" }}>
+                  <div style={{ fontSize: 48, marginBottom: 16 }}>📷</div>
+                  <div style={{ fontSize: 16, marginBottom: 8 }}>No photos uploaded yet</div>
+                  <div style={{ fontSize: 14, color: "#888" }}>Photos will appear here once uploaded for this field</div>
+                </div>
+              ) : (
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 16 }}>
+                  {viewingFieldPhotos.map((photo) => (
+                    <div key={photo.photo_id} style={{
+                      border: "1px solid rgba(255,255,255,0.1)",
+                      borderRadius: 12,
+                      overflow: "hidden",
+                      backgroundColor: "rgba(255,255,255,0.02)"
+                    }}>
+                      <div style={{ height: "150px", overflow: "hidden" }}>
+                        <img
+                          src={`data:${photo.mime_type};base64,${photo.photo_data}`}
+                          alt={photo.notes || `Field photo ${photo.photo_id}`}
+                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        />
+                      </div>
+                      <div style={{ padding: "16px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+                          <div>
+                            <div style={{ fontSize: 12, color: "#7AB85A", fontWeight: 500, marginBottom: 4 }}>{photo.photo_type || 'General'}</div>
+                            <div style={{ fontSize: 11, color: "#888" }}>Photo ID: #{photo.photo_id}</div>
+                          </div>
+                          <div style={{ fontSize: 11, color: "#888" }}>
+                            {new Date(photo.upload_date).toLocaleDateString()}
+                          </div>
+                        </div>
+                        {photo.notes && (
+                          <div style={{ fontSize: 13, color: "#E8E4DA", lineHeight: 1.5 }}>
+                            <strong style={{ color: "#C8C4BB", marginRight: 4 }}>Notes:</strong> {photo.notes}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

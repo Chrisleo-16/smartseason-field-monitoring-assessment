@@ -29,7 +29,7 @@ export const Register = () => {
   }
 
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", minHeight: '100vh', background: '#060A04', display: 'flex', overflow: 'hidden' }}>
+    <div style={{ fontFamily: "'Nunito', sans-serif", minHeight: '100vh', background: '#060A04', display: 'flex', overflow: 'hidden' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,7 +37,7 @@ export const Register = () => {
         .auth-input {
           width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
           border-radius: 12px; padding: 14px 16px;
-          font-family: 'DM Sans', sans-serif; font-size: 15px; color: #F0EDE4; outline: none;
+          font-family: 'Nunito', sans-serif; font-size: 15px; color: #F0EDE4; outline: none;
           transition: border-color 0.2s, background 0.2s;
         }
         .auth-input::placeholder { color: #555; }
@@ -52,7 +52,7 @@ export const Register = () => {
 
         .auth-btn {
           width: 100%; background: #4E8B3A; color: white; border: none; border-radius: 12px;
-          padding: 15px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+          padding: 15px; font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 500;
           cursor: pointer; transition: all 0.2s;
         }
         .auth-btn:hover:not(:disabled) { background: #5FA348; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(78,139,58,0.3); }
@@ -103,8 +103,8 @@ export const Register = () => {
             <div key={b.title} style={{ display: 'flex', gap: 16, marginBottom: 24, alignItems: 'flex-start' }}>
               <div style={{ width: 40, height: 40, borderRadius: 10, flexShrink: 0, background: 'rgba(78,139,58,0.15)', border: '1px solid rgba(78,139,58,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>{b.icon}</div>
               <div>
-                <div style={{ fontFamily: 'DM Sans', fontSize: 14, fontWeight: 500, color: '#E0DDD5', marginBottom: 3 }}>{b.title}</div>
-                <div style={{ fontFamily: 'DM Sans', fontSize: 13, color: '#888', fontWeight: 300 }}>{b.desc}</div>
+                <div style={{ fontFamily: 'Nunito', fontSize: 14, fontWeight: 500, color: '#E0DDD5', marginBottom: 3 }}>{b.title}</div>
+                <div style={{ fontFamily: 'Nunito', fontSize: 13, color: '#888', fontWeight: 300 }}>{b.desc}</div>
               </div>
             </div>
           ))}
@@ -122,17 +122,17 @@ export const Register = () => {
 
           <div style={{ marginBottom: 32 }}>
             <h1 style={{ fontFamily: 'Instrument Serif', fontSize: 34, color: '#F0EDE4', letterSpacing: '-0.02em', marginBottom: 8, lineHeight: 1.1 }}>Create account</h1>
-            <p style={{ fontFamily: 'DM Sans', fontSize: 15, color: '#888', fontWeight: 300 }}>Join thousands of farmers using CropSync</p>
+            <p style={{ fontFamily: 'Nunito', fontSize: 15, color: '#888', fontWeight: 300 }}>Join thousands of farmers using CropSync</p>
           </div>
 
           {error && (
-            <div style={{ background: 'rgba(220,53,69,0.1)', border: '1px solid rgba(220,53,69,0.3)', borderRadius: 10, padding: '12px 16px', marginBottom: 24, fontFamily: 'DM Sans', fontSize: 14, color: '#FF8088' }}>{error}</div>
+            <div style={{ background: 'rgba(220,53,69,0.1)', border: '1px solid rgba(220,53,69,0.3)', borderRadius: 10, padding: '12px 16px', marginBottom: 24, fontFamily: 'Nunito', fontSize: 14, color: '#FF8088' }}>{error}</div>
           )}
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {/* Role selector */}
             <div>
-              <label style={{ fontFamily: 'DM Sans', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 10 }}>I am a…</label>
+              <label style={{ fontFamily: 'Nunito', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 10 }}>I am a…</label>
               <div style={{ display: 'flex', gap: 12 }}>
                 {[
                   {value:'field_agent',label:'Field Agent',icon:'🧑‍🌾',desc:'I work in the field'},
@@ -140,8 +140,8 @@ export const Register = () => {
                 ].map(r => (
                   <div key={r.value} className={`role-card ${formData.users_role === r.value ? 'selected' : ''}`} onClick={() => setFormData({...formData, users_role: r.value})}>
                     <div style={{ fontSize: 24, marginBottom: 6 }}>{r.icon}</div>
-                    <div style={{ fontFamily: 'DM Sans', fontSize: 13, fontWeight: 500, color: formData.users_role === r.value ? '#7AB85A' : '#DDD', marginBottom: 2 }}>{r.label}</div>
-                    <div style={{ fontFamily: 'DM Sans', fontSize: 11, color: '#666' }}>{r.desc}</div>
+                    <div style={{ fontFamily: 'Nunito', fontSize: 13, fontWeight: 500, color: formData.users_role === r.value ? '#7AB85A' : '#DDD', marginBottom: 2 }}>{r.label}</div>
+                    <div style={{ fontFamily: 'Nunito', fontSize: 11, color: '#666' }}>{r.desc}</div>
                   </div>
                 ))}
               </div>
@@ -149,22 +149,22 @@ export const Register = () => {
 
             <div className="two-col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <div>
-                <label style={{ fontFamily: 'DM Sans', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 8 }}>Username</label>
+                <label style={{ fontFamily: 'Nunito', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 8 }}>Username</label>
                 <input type="text" name="username" className="auth-input" placeholder="johndoe" value={formData.username} onChange={handleChange} required />
               </div>
               <div>
-                <label style={{ fontFamily: 'DM Sans', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 8 }}>Phone</label>
+                <label style={{ fontFamily: 'Nunito', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 8 }}>Phone</label>
                 <input type="tel" name="phone_number" className="auth-input" placeholder="+254 700 000 000" value={formData.phone_number} onChange={handleChange} required />
               </div>
             </div>
 
             <div>
-              <label style={{ fontFamily: 'DM Sans', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 8 }}>Email address</label>
+              <label style={{ fontFamily: 'Nunito', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 8 }}>Email address</label>
               <input type="email" name="email" className="auth-input" placeholder="you@example.com" value={formData.email} onChange={handleChange} required />
             </div>
 
             <div>
-              <label style={{ fontFamily: 'DM Sans', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 8 }}>Password</label>
+              <label style={{ fontFamily: 'Nunito', fontSize: 13, color: '#A8A49C', display: 'block', marginBottom: 8 }}>Password</label>
               <input type="password" name="password" className="auth-input" placeholder="Min. 8 characters" value={formData.password} onChange={handleChange} required />
             </div>
 
@@ -172,18 +172,18 @@ export const Register = () => {
               {loading ? 'Creating account…' : 'Create Account'}
             </button>
 
-            <p style={{ fontFamily: 'DM Sans', fontSize: 12, color: '#555', textAlign: 'center', lineHeight: 1.5 }}>
+            <p style={{ fontFamily: 'Nunito', fontSize: 12, color: '#555', textAlign: 'center', lineHeight: 1.5 }}>
               By creating an account you agree to our{' '}
               <a href="#" style={{ color: '#7AB85A', textDecoration: 'none' }}>Terms</a> and{' '}
               <a href="#" style={{ color: '#7AB85A', textDecoration: 'none' }}>Privacy Policy</a>
             </p>
           </form>
 
-          <p style={{ fontFamily: 'DM Sans', fontSize: 14, color: '#888', textAlign: 'center', marginTop: 28, fontWeight: 300 }}>
+          <p style={{ fontFamily: 'Nunito', fontSize: 14, color: '#888', textAlign: 'center', marginTop: 28, fontWeight: 300 }}>
             Already have an account?{' '}
             <Link href="/login" style={{ color: '#7AB85A', textDecoration: 'none', fontWeight: 500 }}>Sign in</Link>
           </p>
-          <p style={{ fontFamily: 'DM Sans', fontSize: 14, color: '#888', textAlign: 'center', marginTop: 12, fontWeight: 300 }}>
+          <p style={{ fontFamily: 'Nunito', fontSize: 14, color: '#888', textAlign: 'center', marginTop: 12, fontWeight: 300 }}>
             <Link href="/" style={{ color: '#666', textDecoration: 'none' }}>← Back to home</Link>
           </p>
         </div>

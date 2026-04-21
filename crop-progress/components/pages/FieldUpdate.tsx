@@ -64,7 +64,7 @@ export const FieldUpdate: React.FC<FieldUpdateProps> = ({ fieldId, onUpdateCompl
   const cfg = stageConfig[updateData.current_stage as keyof typeof stageConfig]||stageConfig.Planted
 
   return (
-    <div style={{ fontFamily:"'DM Sans',sans-serif", background:'#0A0E08', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', padding:'40px 20px', color:'#E8E4DA' }}>
+    <div style={{ fontFamily:"'Nunito',sans-serif", background:'#0A0E08', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', padding:'40px 20px', color:'#E8E4DA' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
         *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }

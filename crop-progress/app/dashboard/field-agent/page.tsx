@@ -196,7 +196,7 @@ export default function FieldAgentDashboard() {
   );
 
   return (
-    <div style={{ fontFamily: "'DM Sans', sans-serif", minHeight: "100vh", background: "#0A0E08", color: "#E8E4DA", display: "flex" }}>
+    <div style={{ fontFamily: "'Nunito', sans-serif", minHeight: "100vh", background: "#0A0E08", color: "#E8E4DA", display: "flex" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap');
         *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -218,7 +218,7 @@ export default function FieldAgentDashboard() {
 }
         .pill { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:100px; font-size:11px; font-weight:500; white-space:nowrap; line-height:1.2; }
 
-        .update-btn { width:100%; background:rgba(78,139,58,0.15); border:1px solid rgba(78,139,58,0.3); color:#7AB85A; border-radius:10px; padding:11px; font-family:'DM Sans',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all 0.2s; }
+        .update-btn { width:100%; background:rgba(78,139,58,0.15); border:1px solid rgba(78,139,58,0.3); color:#7AB85A; border-radius:10px; padding:11px; font-family:'Nunito',sans-serif; font-size:13px; font-weight:500; cursor:pointer; transition:all 0.2s; }
         .update-btn:hover { background:rgba(78,139,58,0.25); border-color:rgba(78,139,58,0.5); }
 
         .stat-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:22px; transition:border-color 0.2s; }
@@ -274,7 +274,7 @@ export default function FieldAgentDashboard() {
           {activeNav === "fields" && (
             <div className="header-actions" style={{ display: "flex", gap: 8 }}>
               {(["grid", "list"] as const).map((m) => (
-                <button key={m} onClick={() => setViewMode(m)} style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.08)", background: viewMode === m ? "rgba(78,139,58,0.15)" : "transparent", color: viewMode === m ? "#7AB85A" : "#888", cursor: "pointer", fontSize: 13, fontFamily: "DM Sans" }}>
+                <button key={m} onClick={() => setViewMode(m)} style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.08)", background: viewMode === m ? "rgba(78,139,58,0.15)" : "transparent", color: viewMode === m ? "#7AB85A" : "#888", cursor: "pointer", fontSize: 13, fontFamily: "Nunito" }}>
                   {m === "grid" ? "⊞ Grid" : "☰ List"}
                 </button>
               ))}
@@ -475,7 +475,7 @@ export default function FieldAgentDashboard() {
                       return (
                         <button key={s} type="button" onClick={() => setUpdateData({ ...updateData, current_stage: s as any })} style={{ padding: "12px 8px", borderRadius: 12, cursor: "pointer", border: isActive ? `1px solid ${cfg.border}` : "1px solid rgba(255,255,255,0.08)", background: isActive ? cfg.bg : "rgba(255,255,255,0.03)", transition: "all 0.2s", textAlign: "center" }}>
                           <div style={{ fontSize: 18, marginBottom: 4 }}>{cfg.icon}</div>
-                          <div style={{ fontSize: 11, color: isActive ? cfg.color : "#666", fontFamily: "DM Sans", fontWeight: isActive ? 500 : 400 }}>{s}</div>
+                          <div style={{ fontSize: 11, color: isActive ? cfg.color : "#666", fontFamily: "Nunito", fontWeight: isActive ? 500 : 400 }}>{s}</div>
                           {isActive && <div style={{ width: 20, height: 2, background: cfg.color, borderRadius: 1, margin: "4px auto 0" }} />}
                         </button>
                       );
