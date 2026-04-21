@@ -450,23 +450,7 @@ export const LandingPage = () => {
               <Link href="/login"    className="btn-ghost-hero"  style={{ padding: "12px 26px" }}>Know More →</Link>
             </motion.div>
 
-            {/* Social proof */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.52 }}
-              style={{ display: "flex", alignItems: "center", gap: 12 }}
-            >
-              <div style={{ display: "flex" }}>
-                {["🧑‍🌾","👩‍🌾","🧑‍💼"].map((e,i) => (
-                  <div key={i} style={{ width: 32, height: 32, borderRadius: "50%", background: "rgba(255,255,255,0.18)", border: "2px solid rgba(255,255,255,0.45)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, marginLeft: i > 0 ? -10 : 0 }}>{e}</div>
-                ))}
-              </div>
-              <span style={{ fontFamily: "Nunito", fontSize: 13, color: "rgba(255,255,255,0.7)" }}>
-                <strong style={{ color: "#fff" }}>4.8</strong> ·{" "}
-                <strong style={{ color: "#fff" }}>12K+</strong> Farmers
-              </span>
-            </motion.div>
+            
           </div>
         </div>
 
